@@ -3,14 +3,14 @@
 	"tasks": [
 		{
 			"type": "cppbuild",
-			"label": "C/C++: gcc.exe build active file(Networking)",
+			"label": "C/C++: gcc.exe Build server.exe",
 			"command": "C:/msys64/mingw64/bin/gcc.exe",
 			"args": [
 				"-fdiagnostics-color=always",
 				"-g",
-				"${file}",
+				"${workspaceFolder}/src/server.c",
 				"-o",
-				"${fileDirname}\\${fileBasenameNoExtension}.exe",
+				"${workspaceFolder}/bin/server.exe",
 				"-lws2_32"
 			],
 			"options": {
@@ -21,6 +21,36 @@
 			],
 			"group": "build",
 			"detail": "compiler: C:/msys64/mingw64/bin/gcc.exe"
+		},
+		{
+			"type": "cppbuild",
+			"label": "C/C++: Build client.exe",
+			"command": "C:/msys64/mingw64/bin/gcc.exe",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				"${workspaceFolder}/src/client.c",
+				"-o",
+				"${workspaceFolder}/bin/client.exe",
+				"-lws2_32"
+			],
+			"options": {
+				"cwd": "C:/msys64/mingw64/bin"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "compiler: C:/msys64/mingw64/bin/gcc.exe"
+		},
+		{
+			"label": "Build All (server + client)",
+			"dependsOn": [
+				"C/C++: Build server.exe",
+				"C/C++: Build client.exe"
+			],
+			"group": "build",
+			"problemMatcher": []
 		}
 	]
 }

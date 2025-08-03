@@ -35,22 +35,24 @@ unsigned __stdcall ClientHandler(void* client_socket) {
 }
 
 unsigned __stdcall HandleConsoleCommands() {
-    FILE* helpList = fopen("commandList.txt", "rb");
-    fseek(helpList, 0, SEEK_END);
-    size_t size = ftell(helpList);
-    char* content = (char*)malloc(size + 2);
-    rewind(helpList);
-    size_t bytesRead = fread(content, 1, size, helpList);
-    content[size] = '\n';
-    content[size+1] = '\0';
-    fclose(helpList);
     while(1) {
         char command[1024];
         fgets(command, 1024, stdin);
         command[strcspn(command, "\n")] = '\0';
         if(strcmp(strlwr(command), "help") == 0) {
+            //Open the help list file for displaying when help is written
+            FILE* helpList = fopen("commandList.txt", "rb");
+            fseek(helpList, 0, SEEK_END);
+            size_t size = ftell(helpList);
+            char* content = (char*)malloc(size + 2);
+            rewind(helpList);
+            size_t bytesRead = fread(content, 1, size, helpList);
+            content[size] = '\n';
+            content[size+1] = '\0';
+            fclose(helpList);
             printf("%s", content);
-        } else if (strcmp(strlwr(command), "shutdown") == 0 || strcmp(strlwr(command), "quit") == 0)
+            free(content);
+        } else if (strcmp(strlwr(command), "shutdown") == 0 || strcmp(strlwr(command), "quit") == 0 || strcmp(strlwr(command), "exit") == 0)
         {
             printf("[SERVER]Shuting down...\n");
             atomic_store(&shutdown_request, 1);
@@ -62,7 +64,7 @@ unsigned __stdcall HandleConsoleCommands() {
 }
 
 int main() {
-    FILE *errorFile = freopen("serverErrorLog.txt", "w", stderr);
+    FILE *errorFile = freopen("resources/serverErrorLog.txt", "w", stderr);
     if(!errorFile) {
         return 1;
     }

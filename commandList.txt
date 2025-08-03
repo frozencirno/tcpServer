@@ -1,2 +1,0 @@
-help - Lists all commands.
-shutdown / quit - Gracefully closes the server.
